@@ -2,6 +2,6 @@
   "dialect": "mysql",
   "schema": "./src/db/schema.ts",
   "dbCredentials": {
-    "url": "mysql://root:123456@127.0.0.1:3306/app_db"
+    "url": "${DATABASE_URL}"
   }
 }
