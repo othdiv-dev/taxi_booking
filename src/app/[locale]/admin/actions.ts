@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { drivers, bookings, telegramNotifications, admins } from "@/db/schema";
+import { zones } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -457,4 +458,49 @@ export async function changePasswordAction(
     .where(eq(admins.email, email));
 
   return { success: "Mot de passe mis à jour avec succès." };
+}
+
+export async function createZoneAction(formData: FormData) {
+  await requireAdmin();
+
+  await db.insert(zones).values({
+    name:            String(formData.get("name")            ?? ""),
+    slug:            String(formData.get("slug")            ?? ""),
+    headline:        String(formData.get("headline")        ?? "") || null,
+    metaTitle:       String(formData.get("metaTitle")       ?? "") || null,
+    metaDescription: String(formData.get("metaDescription") ?? "") || null,
+    description:     String(formData.get("description")     ?? "") || null,
+    isActive:        true,
+    createdAt:       new Date(),
+  });
+
+  revalidatePath("/admin/zones");
+}
+
+export async function updateZoneAction(formData: FormData) {
+  await requireAdmin();
+
+  const id       = Number(formData.get("id"));
+  const isActive = formData.get("isActive") === "on";
+
+  await db.update(zones).set({
+    name:            String(formData.get("name")            ?? ""),
+    slug:            String(formData.get("slug")            ?? ""),
+    headline:        String(formData.get("headline")        ?? "") || null,
+    metaTitle:       String(formData.get("metaTitle")       ?? "") || null,
+    metaDescription: String(formData.get("metaDescription") ?? "") || null,
+    description:     String(formData.get("description")     ?? "") || null,
+    isActive,
+  }).where(eq(zones.id, id));
+
+  revalidatePath("/admin/zones");
+}
+
+export async function deleteZoneAction(formData: FormData) {
+  await requireAdmin();
+
+  const id = Number(formData.get("id"));
+  await db.delete(zones).where(eq(zones.id, id));
+
+  revalidatePath("/admin/zones");
 }
