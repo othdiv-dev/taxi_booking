@@ -1,9 +1,9 @@
 {
   "name": "nextjs-postgresql-template",
   "private": true,
- "scripts": {
+"scripts": {
   "build": "next build",
-  "start": "npx drizzle-kit push --force && next start",
+  "start": "node migrate.mjs && next start",
   "dev": "next dev --turbopack"
 },
   "dependencies": {
