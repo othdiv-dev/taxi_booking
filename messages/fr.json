@@ -1,0 +1,232 @@
+{
+  "metadata": {
+    "title": "CityTaxi - Réservation de taxi en ligne",
+    "description": "Réservez votre taxi en 2 minutes : 4€ prise en charge + 2,50€/km, paiement sécurisé, chauffeurs vérifiés, 24h/24."
+  },
+  "header": {
+    "nav": {
+      "howItWorks": "Comment ça marche",
+      "pricing": "Tarifs",
+      "reviews": "Avis",
+      "faq": "FAQ"
+    },
+    "cta": "Réserver",
+    "menuLabel": "Menu"
+  },
+  "chauffeurConfirmation": {
+  "title": "Candidature reçue !",
+  "thanksLine1": "Merci de votre inscription chez CityTaxi.",
+  "reviewLine": "Votre candidature sera examinée sous 48 heures.",
+  "notifyLine": "Vous recevrez un message dès que votre compte sera activé.",
+  "checkEmail": "📧 Vérifiez votre email pour une confirmation.",
+  "backHome": "← Retour à l'accueil"
+},
+"hero": {
+  "badge": "Taxi & transferts aéroport",
+  "title": "Votre taxi à prix fixe,",
+  "titleAccent": "réservé en 2 minutes.",
+  "subtitle": "{base}€ de prise en charge + {perKm}€ par kilomètre. Le prix exact s'affiche avant de confirmer — pas de compteur, pas de surprise.",
+  "points": {
+    "pickup": "Prise en charge partout aux Pays-Bas",
+    "confirm": "Chauffeur confirmé en quelques minutes",
+    "vehicle": "Véhicules récents, intérieur impeccable"
+  },
+  "stats": {
+    "ratingValue": "4,9/5",
+    "ratingLabel": "127 avis Google",
+    "hoursValue": "24h/24",
+    "hoursLabel": "7 jours sur 7",
+    "ridesValue": "+2 000",
+    "ridesLabel": "courses réalisées"
+  },
+  "imgAlt": "Taxi berline la nuit dans une ville éclairée en bleu"
+},
+"bookingForm": {
+  "badge": "Réservation instantanée",
+  "step1Title": "Où souhaitez-vous aller ?",
+  "step2Title": "Détails de votre réservation",
+  "departure": "Départ",
+  "arrival": "Arrivée",
+  "swapTitle": "Inverser les adresses",
+  "chooseVehicle": "Choisissez votre véhicule",
+  "calculating": "Calcul en cours…",
+  "estimatedPrice": "Prix estimé",
+  "enterAddresses": "Entrez le départ et l'arrivée pour voir le prix",
+  "distanceError": "Impossible de calculer la distance pour ces adresses. Veuillez les vérifier et réessayer.",
+  "continue": "Continuer",
+  "seePriceFirst": "Voir le prix d'abord",
+  "datetime": "Date & heure",
+  "flightNumber": "N° de vol",
+  "passengers": "Passagers",
+  "maxPassengers": "max",
+  "luggage": "Bagages",
+  "yourDetails": "Vos coordonnées",
+  "fullName": "Nom complet *",
+  "phone": "+31 6 12 34 56 78 *",
+  "email": "Email *",
+  "notes": "Notes pour le chauffeur (optionnel)",
+  "back": "← Retour",
+  "confirm": "Confirmer",
+  "processing": "Traitement…",
+  "securePayment": "Paiement sécurisé · Confirmation par email",
+  "addressModes": {
+    "adres": "Adres",
+    "postcode": "Postcode",
+    "internationaal": "Internationaal",
+    "vliegveld": "Vliegveld"
+  },
+  "placeholders": {
+    "city": "Stad",
+    "street": "Straat",
+    "international": "Adres (stad, land...)",
+    "chooseAirport": "Kies luchthaven...",
+    "terminal": "Terminal"
+  },
+  "errors": {
+    "noDate": "Merci de choisir une date et une heure.",
+    "tooSoon": "La réservation doit être faite au minimum 2h à l'avance.",
+    "invalidPhone": "Numéro de téléphone invalide.",
+    "invalidEmail": "Adresse email invalide.",
+    "serverError": "Une erreur est survenue.",
+    "networkError": "Impossible de contacter le serveur."
+  },
+  "confirmation": {
+    "title": "Réservation confirmée",
+    "emailSent": "Un email de confirmation vient de partir vers",
+    "defaultEmail": "votre adresse",
+    "reference": "Votre référence",
+    "departure": "Départ",
+    "arrival": "Arrivée",
+    "vehicle": "Véhicule",
+    "total": "Total",
+    "newBooking": "Nouvelle réservation"
+  }
+},
+"placeholders": {
+  "city": "Ville",
+  "street": "Rue / Avenue",
+  "international": "Adresse (ville, pays...)",
+  "chooseAirport": "Choisir un aéroport...",
+  "terminal": "Terminal"
+},
+"trustBar": {
+  "rating": "4,9/5 sur +2 000 courses",
+  "payment": "Paiement 100% sécurisé",
+  "availability": "Disponible 24h/24",
+  "verified": "Chauffeurs vérifiés"
+},
+"howItWorks": {
+  "eyebrow": "Le parcours",
+  "title": "Quatre étapes, deux minutes",
+  "subtitle": "Un service simple et transparent, de la réservation jusqu'à l'arrivée à destination.",
+  "steps": {
+    "route": {
+      "title": "Indiquez votre trajet",
+      "text": "Renseignez le départ, l'arrivée et l'heure de prise en charge. Le prix s'affiche instantanément."
+    },
+    "pay": {
+      "title": "Payez en ligne",
+      "text": "Réglez votre course en toute sécurité par carte, iDEAL ou d'autres moyens de paiement."
+    },
+    "accept": {
+      "title": "Un chauffeur accepte",
+      "text": "Votre demande est envoyée instantanément à nos chauffeurs. Le premier disponible l'accepte."
+    },
+    "enjoy": {
+      "title": "Profitez du trajet",
+      "text": "Suivez le statut de votre course en temps réel jusqu'à l'arrivée à destination."
+    }
+  }
+},
+"pricingSection": {
+  "eyebrow": "Tarifs",
+  "title": "Prix fixe, connu avant de monter",
+  "subtitle": "Une formule claire, sans compteur ni surprise\u00a0: {base}€ de prise en charge + {perKm}€ par kilomètre.",
+  "vehicleAlt": "Véhicule {name}",
+  "bookButton": "Réserver un {name}",
+  "perks": {
+    "sedan": ["3 valises + 2 bagages à main", "Idéal ville et aéroport", "Le meilleur rapport prix"],
+    "van": ["Jusqu'à 8 valises", "Parfait pour les groupes", "Sièges enfant sur demande"],
+    "luxury": ["Berline haut de gamme", "Chauffeur en costume", "Eau et wifi à bord"]
+  }
+},
+"vehicles": {
+  "labels": {
+    "sedan": "Berline",
+    "van": "Van (7 places)",
+    "luxury": "Luxe"
+  },
+  "descriptions": {
+    "sedan": "1–4 passagers",
+    "van": "1–7 passagers",
+    "luxury": "1–3 passagers"
+  }
+},
+"googleReviews": {
+  "eyebrow": "Avis clients",
+  "title": "Ce que disent nos passagers",
+  "googleVerified": "127 avis Google vérifiés",
+  "starsLabel": "{count} étoiles sur 5",
+  "reviews": [
+    { "name": "Sophie M.", "count": "12 avis", "text": "Chauffeur ponctuel, voiture impeccable et trajet très agréable. Je recommande vivement ce service pour l'aéroport !" },
+    { "name": "Karim B.", "count": "8 avis", "text": "Service parfait, le chauffeur m'a aidé avec mes bagages et connaissait parfaitement les routes. Prix très correct." },
+    { "name": "Isabelle D.", "count": "21 avis", "text": "Réservation simple et rapide. Le taxi était là 5 minutes en avance. Je n'utilise plus que ce service maintenant !" },
+    { "name": "Thomas R.", "count": "5 avis", "text": "Excellente expérience du début à la fin. Confirmation immédiate, chauffeur sympa et prix fixe sans surprise." },
+    { "name": "Amina L.", "count": "15 avis", "text": "J'étais avec mon bébé et mes valises, le chauffeur a été d'une aide précieuse. Merci pour ce service au top !" },
+    { "name": "Marc V.", "count": "33 avis", "text": "Toujours à l'heure, voiture propre et confortable. Mon taxi de confiance pour tous mes déplacements professionnels." }
+  ]
+},
+"faq": {
+  "eyebrow": "FAQ",
+  "title": "Questions fréquentes",
+  "subtitle": "Tout ce que vous devez savoir avant de réserver votre course.",
+  "categories": [
+    {
+      "title": "Procédure de réservation",
+      "questions": [
+        { "q": "Quelles informations dois-je renseigner ?", "a": "Veuillez renseigner vos coordonnées le plus complètement possible : l'adresse complète (avec le numéro), votre nom, votre numéro de téléphone et votre numéro de vol. Cela nous permettra de vous conduire et de vous ramener au bon endroit à l'heure." },
+        { "q": "Combien de temps à l'avance dois-je réserver ?", "a": "Vous pouvez réserver votre taxi en ligne, à l'avance et en toute simplicité. Besoin d'un taxi rapidement ? Contactez-nous directement au +31 (0) 66 666 6666." },
+        { "q": "Vais-je recevoir une confirmation de ma réservation ?", "a": "Oui, vous recevez immédiatement un email de confirmation avec votre numéro de réservation, les détails du trajet et les coordonnées de votre chauffeur." },
+        { "q": "Puis-je modifier ou annuler ma réservation ?", "a": "Vous pouvez modifier ou annuler votre réservation jusqu'à 2 heures avant le trajet en nous contactant par téléphone ou email. Les annulations tardives peuvent entraîner des frais." }
+      ]
+    },
+    {
+      "title": "Tarifs & Paiement",
+      "questions": [
+        { "q": "Tarif fixe ou compteur ?", "a": "Nous pratiquons exclusivement des tarifs fixes calculés à l'avance : 4€ de prise en charge + 2,50€/km. Vous connaissez le prix exact avant de confirmer, sans mauvaise surprise à l'arrivée." },
+        { "q": "Quels moyens de paiement sont acceptés ?", "a": "Nous acceptons les cartes bancaires (Visa, Mastercard, American Express), PayPal et iDEAL. Le paiement s'effectue en ligne lors de la réservation, de manière 100% sécurisée." },
+        { "q": "Y a-t-il des frais supplémentaires par passager ?", "a": "Non, notre tarif est calculé par trajet et non par passager. Que vous soyez 1 ou 4 passagers dans une berline, le prix reste le même. Pour les groupes de plus de 4 personnes, un van est recommandé." },
+        { "q": "Puis-je obtenir une facture ?", "a": "Oui, une facture détaillée est automatiquement envoyée par email après votre trajet. Elle est parfaite pour vos notes de frais professionnelles." }
+      ]
+    },
+    {
+      "title": "Bagages & Demandes spéciales",
+      "questions": [
+        { "q": "Combien de bagages puis-je emporter ?", "a": "Une berline peut accueillir jusqu'à 3 valises en soute et 2 bagages à main. Pour plus de bagages, optez pour le van qui offre un espace de chargement beaucoup plus grand." },
+        { "q": "J'ai des bagages volumineux, que faire ?", "a": "Signalez-le dans les notes de votre réservation. Nous adapterons le véhicule en conséquence. Pour les vélos, fauteuils roulants démontables ou matériel de ski, contactez-nous directement." },
+        { "q": "Puis-je voyager avec mon animal de compagnie ?", "a": "Oui, les animaux sont acceptés en cage de transport. Merci de le préciser dans les notes lors de la réservation afin que nous puissions affecter un chauffeur compatible." },
+        { "q": "Avez-vous des sièges enfant ?", "a": "Oui, nous proposons des sièges bébé et réhausseurs. Indiquez l'âge et le poids de votre enfant dans les notes de réservation pour que nous prévoyions le siège adapté." }
+      ]
+    }
+  ]
+},
+"footer": {
+  "description": "Réservez votre course en 2 minutes. Prix fixe : 4€ de prise en charge + 2,50€/km, connu avant de monter.",
+  "rating": "⭐ 4,9/5",
+  "securePayment": "🛡️ Paiement sécurisé",
+  "zonesTitle": "Nos zones",
+  "taxiPrefix": "Taxi",
+  "contactTitle": "Contact",
+  "availability": "Disponible 24h/24 · 7j/7",
+  "rights": "Tous droits réservés.",
+  "legal": "Mentions légales",
+  "terms": "Conditions générales",
+  "defaultZones": [
+    { "slug": "amsterdam", "name": "Amsterdam" },
+    { "slug": "schiphol", "name": "Schiphol Aéroport" },
+    { "slug": "rotterdam", "name": "Rotterdam" },
+    { "slug": "la-haye", "name": "La Haye" },
+    { "slug": "utrecht", "name": "Utrecht" }
+  ]
+}
+}

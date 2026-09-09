@@ -1,0 +1,225 @@
+{
+  "metadata": {
+    "title": "CityTaxi - Online taxi boeken",
+    "description": "Boek uw taxi in 2 minuten: €4 starttarief + €2,50/km, veilig betalen, geverifieerde chauffeurs, 24/7."
+  },
+  "header": {
+    "nav": {
+      "howItWorks": "Hoe het werkt",
+      "pricing": "Tarieven",
+      "reviews": "Reviews",
+      "faq": "FAQ"
+    },
+    "cta": "Reserveren",
+    "menuLabel": "Menu"
+  },
+  "chauffeurConfirmation": {
+  "title": "Aanmelding ontvangen!",
+  "thanksLine1": "Bedankt voor uw registratie bij CityTaxi.",
+  "reviewLine": "Uw aanmelding wordt binnen 48 uur beoordeeld.",
+  "notifyLine": "U ontvangt een bericht zodra uw account is geactiveerd.",
+  "checkEmail": "📧 Controleer uw e-mail voor een bevestiging.",
+  "backHome": "← Terug naar de homepage"
+},
+"hero": {
+  "badge": "Taxi & luchthaventransfers",
+  "title": "Uw taxi tegen vaste prijs,",
+  "titleAccent": "geboekt in 2 minuten.",
+  "subtitle": "{base}€ starttarief + {perKm}€ per kilometer. De exacte prijs wordt getoond vóór bevestiging — geen meter, geen verrassingen.",
+  "points": {
+    "pickup": "Ophalen overal in Nederland",
+    "confirm": "Chauffeur bevestigd binnen enkele minuten",
+    "vehicle": "Recente voertuigen, onberispelijk interieur"
+  },
+  "stats": {
+    "ratingValue": "4,9/5",
+    "ratingLabel": "127 Google-recensies",
+    "hoursValue": "24/7",
+    "hoursLabel": "7 dagen per week",
+    "ridesValue": "+2.000",
+    "ridesLabel": "ritten voltooid"
+  },
+  "imgAlt": "Sedan taxi 's nachts in een blauwe stad"
+},
+"bookingForm": {
+  "badge": "Direct reserveren",
+  "step1Title": "Waar wilt u naartoe?",
+  "step2Title": "Details van uw reservering",
+  "departure": "Vertrek",
+  "arrival": "Bestemming",
+  "swapTitle": "Adressen omwisselen",
+  "chooseVehicle": "Kies uw voertuig",
+  "calculating": "Berekenen…",
+  "estimatedPrice": "Geschatte prijs",
+  "enterAddresses": "Voer vertrek en bestemming in om de prijs te zien",
+  "distanceError": "Kan de afstand voor deze adressen niet berekenen. Controleer de adressen en probeer opnieuw.",
+  "continue": "Doorgaan",
+  "seePriceFirst": "Bekijk eerst de prijs",
+  "datetime": "Datum & tijd",
+  "flightNumber": "Vluchtnummer",
+  "passengers": "Passagiers",
+  "maxPassengers": "max",
+  "luggage": "Bagage",
+  "yourDetails": "Uw gegevens",
+  "fullName": "Volledige naam *",
+  "phone": "+31 6 12 34 56 78 *",
+  "email": "E-mail *",
+  "notes": "Notities voor de chauffeur (optioneel)",
+  "back": "← Terug",
+  "confirm": "Bevestigen",
+  "processing": "Verwerken…",
+  "securePayment": "Veilig betalen · Bevestiging per e-mail",
+  "addressModes": {
+    "adres": "Adres",
+    "postcode": "Postcode",
+    "internationaal": "Internationaal",
+    "vliegveld": "Vliegveld"
+  },
+  "placeholders": {
+    "city": "Stad",
+    "street": "Straat",
+    "international": "Adres (stad, land...)",
+    "chooseAirport": "Kies luchthaven...",
+    "terminal": "Terminal"
+  },
+  "errors": {
+    "noDate": "Kies een datum en tijdstip.",
+    "tooSoon": "Reservering moet minimaal 2 uur van tevoren worden gemaakt.",
+    "invalidPhone": "Ongeldig telefoonnummer.",
+    "invalidEmail": "Ongeldig e-mailadres.",
+    "serverError": "Er is een fout opgetreden.",
+    "networkError": "Kan de server niet bereiken."
+  },
+  "confirmation": {
+    "title": "Reservering bevestigd",
+    "emailSent": "Een bevestigingsmail is verzonden naar",
+    "defaultEmail": "uw adres",
+    "reference": "Uw referentie",
+    "departure": "Vertrek",
+    "arrival": "Bestemming",
+    "vehicle": "Voertuig",
+    "total": "Totaal",
+    "newBooking": "Nieuwe reservering"
+  }
+},
+"trustBar": {
+  "rating": "4,9/5 op +2.000 ritten",
+  "payment": "100% veilig betalen",
+  "availability": "24/7 beschikbaar",
+  "verified": "Geverifieerde chauffeurs"
+},
+"howItWorks": {
+  "eyebrow": "Het traject",
+  "title": "Vier stappen, twee minuten",
+  "subtitle": "Een eenvoudige, transparante service, van boeking tot aankomst op uw bestemming.",
+  "steps": {
+    "route": {
+      "title": "Voer uw route in",
+      "text": "Vul vertrek, bestemming en tijdstip in. De prijs verschijnt direct."
+    },
+    "pay": {
+      "title": "Betaal online",
+      "text": "Betaal veilig met kaart, iDEAL of andere betaalmethoden."
+    },
+    "accept": {
+      "title": "Een chauffeur accepteert",
+      "text": "Uw aanvraag wordt direct naar onze chauffeurs gestuurd. De eerst beschikbare accepteert deze."
+    },
+    "enjoy": {
+      "title": "Geniet van de rit",
+      "text": "Volg de status van uw rit in realtime tot aankomst op uw bestemming."
+    }
+  }
+},
+"pricingSection": {
+  "eyebrow": "Tarieven",
+  "title": "Vaste prijs, bekend vóór vertrek",
+  "subtitle": "Een duidelijke formule, geen meter of verrassingen: {base}€ starttarief + {perKm}€ per kilometer.",
+  "vehicleAlt": "{name} voertuig",
+  "bookButton": "Boek een {name}",
+  "perks": {
+    "sedan": ["3 koffers + 2 handbagage", "Ideaal voor stad en luchthaven", "Beste prijs-kwaliteitverhouding"],
+    "van": ["Tot 8 koffers", "Perfect voor groepen", "Kinderzitjes op aanvraag"],
+    "luxury": ["Premium sedan", "Chauffeur in pak", "Water en wifi aan boord"]
+  }
+},
+"vehicles": {
+  "labels": {
+    "sedan": "Sedan",
+    "van": "Bestelwagen (7 zitplaatsen)",
+    "luxury": "Luxe"
+  },
+  "descriptions": {
+    "sedan": "1–4 passagiers",
+    "van": "1–7 passagiers",
+    "luxury": "1–3 passagiers"
+  }
+},
+"googleReviews": {
+  "eyebrow": "Klantbeoordelingen",
+  "title": "Wat onze passagiers zeggen",
+  "googleVerified": "127 geverifieerde Google-beoordelingen",
+  "starsLabel": "{count} sterren op 5",
+  "reviews": [
+    { "name": "Sophie M.", "count": "12 beoordelingen", "text": "Stipte chauffeur, onberispelijke auto en zeer aangenaam traject. Ik raad deze service voor het vliegveld sterk aan!" },
+    { "name": "Karim B.", "count": "8 beoordelingen", "text": "Perfecte service, de chauffeur hielp me met mijn bagage en kende de routes uitstekend. Zeer correcte prijs." },
+    { "name": "Isabelle D.", "count": "21 beoordelingen", "text": "Eenvoudige en snelle reservering. De taxi was er 5 minuten voor. Ik gebruik alleen nog deze service!" },
+    { "name": "Thomas R.", "count": "5 beoordelingen", "text": "Uitstekende ervaring van begin tot eind. Directe bevestiging, vriendelijke chauffeur en vaste prijs zonder verrassingen." },
+    { "name": "Amina L.", "count": "15 beoordelingen", "text": "Ik was met mijn baby en koffers, de chauffeur was ontzettend behulpzaam. Bedankt voor deze topdienst!" },
+    { "name": "Marc V.", "count": "33 beoordelingen", "text": "Altijd op tijd, schone en comfortabele auto. Mijn vertrouwde taxi voor al mijn zakelijke verplaatsingen." }
+  ]
+},
+"faq": {
+  "eyebrow": "FAQ",
+  "title": "Veelgestelde vragen",
+  "subtitle": "Alles wat u moet weten voordat u uw rit boekt.",
+  "categories": [
+    {
+      "title": "Boekingsprocedure",
+      "questions": [
+        { "q": "Welke informatie moet ik opgeven?", "a": "Vul uw gegevens zo volledig mogelijk in: volledig adres (met huisnummer), uw naam, telefoonnummer en vluchtnummer. Zo kunnen we u op tijd naar de juiste plek brengen en ophalen." },
+        { "q": "Hoe ver van tevoren moet ik boeken?", "a": "U kunt uw taxi eenvoudig online vooraf boeken. Heeft u snel een taxi nodig? Neem dan direct contact met ons op via +31 (0) 66 666 6666." },
+        { "q": "Ontvang ik een boekingsbevestiging?", "a": "Ja, u ontvangt direct een bevestigingsmail met uw boekingsnummer, ritdetails en de contactgegevens van uw chauffeur." },
+        { "q": "Kan ik mijn boeking wijzigen of annuleren?", "a": "U kunt uw boeking tot 2 uur voor de rit wijzigen of annuleren via telefoon of e-mail. Bij late annuleringen kunnen kosten in rekening worden gebracht." }
+      ]
+    },
+    {
+      "title": "Tarieven & Betaling",
+      "questions": [
+        { "q": "Vaste prijs of teller?", "a": "Wij hanteren uitsluitend vooraf berekende vaste tarieven: €4 starttarief + €2,50/km. U kent de exacte prijs vóór bevestiging, zonder onaangename verrassingen bij aankomst." },
+        { "q": "Welke betaalmethoden worden geaccepteerd?", "a": "Wij accepteren creditcards (Visa, Mastercard, American Express), PayPal en iDEAL. Betaling verloopt online bij boeking, 100% beveiligd." },
+        { "q": "Zijn er extra kosten per passagier?", "a": "Nee, onze prijs wordt per rit berekend, niet per passagier. Of u nu met 1 of 4 passagiers in een sedan zit, de prijs blijft gelijk. Voor groepen van meer dan 4 personen wordt een bestelwagen aanbevolen." },
+        { "q": "Kan ik een factuur krijgen?", "a": "Ja, een gedetailleerde factuur wordt automatisch per e-mail verzonden na uw rit. Perfect voor uw zakelijke onkostennota's." }
+      ]
+    },
+    {
+      "title": "Bagage & Speciale verzoeken",
+      "questions": [
+        { "q": "Hoeveel bagage kan ik meenemen?", "a": "Een sedan biedt ruimte voor maximaal 3 koffers in de kofferbak en 2 stuks handbagage. Voor meer bagage kiest u voor de bestelwagen met veel meer laadruimte." },
+        { "q": "Ik heb omvangrijke bagage, wat moet ik doen?", "a": "Vermeld dit in de notities van uw boeking. Wij passen het voertuig hierop aan. Voor fietsen, opvouwbare rolstoelen of skimateriaal kunt u ons direct contacteren." },
+        { "q": "Kan ik reizen met mijn huisdier?", "a": "Ja, huisdieren worden geaccepteerd in een transportkooi. Vermeld dit in de boekingsnotities zodat wij een geschikte chauffeur kunnen inplannen." },
+        { "q": "Heeft u kinderstoelen?", "a": "Ja, wij bieden babystoeltjes en zitverhogers aan. Geef de leeftijd en het gewicht van uw kind op in de boekingsnotities zodat wij het juiste stoeltje kunnen voorzien." }
+      ]
+    }
+  ]
+},
+"footer": {
+  "description": "Boek uw rit in 2 minuten. Vaste prijs: €4 starttarief + €2,50/km, bekend vóór vertrek.",
+  "rating": "⭐ 4,9/5",
+  "securePayment": "🛡️ Veilig betalen",
+  "zonesTitle": "Onze zones",
+  "taxiPrefix": "Taxi",
+  "contactTitle": "Contact",
+  "availability": "24/7 beschikbaar",
+  "rights": "Alle rechten voorbehouden.",
+  "legal": "Juridische kennisgeving",
+  "terms": "Algemene voorwaarden",
+  "defaultZones": [
+    { "slug": "amsterdam", "name": "Amsterdam" },
+    { "slug": "schiphol", "name": "Schiphol Luchthaven" },
+    { "slug": "rotterdam", "name": "Rotterdam" },
+    { "slug": "den-haag", "name": "Den Haag" },
+    { "slug": "utrecht", "name": "Utrecht" }
+  ]
+}
+}

@@ -1,0 +1,225 @@
+{
+  "metadata": {
+    "title": "CityTaxi - Book a taxi online",
+    "description": "Book your taxi in 2 minutes: €4 base fare + €2.50/km, secure payment, verified drivers, 24/7."
+  },
+  "header": {
+    "nav": {
+      "howItWorks": "How it works",
+      "pricing": "Pricing",
+      "reviews": "Reviews",
+      "faq": "FAQ"
+    },
+    "cta": "Book now",
+    "menuLabel": "Menu"
+  },
+  "chauffeurConfirmation": {
+  "title": "Application received!",
+  "thanksLine1": "Thank you for registering with CityTaxi.",
+  "reviewLine": "Your application will be reviewed within 48 hours.",
+  "notifyLine": "You will receive a message once your account is activated.",
+  "checkEmail": "📧 Check your email for a confirmation.",
+  "backHome": "← Back to homepage"
+},
+"hero": {
+  "badge": "Taxi & airport transfers",
+  "title": "Your taxi at a fixed price,",
+  "titleAccent": "booked in 2 minutes.",
+  "subtitle": "{base}€ base fare + {perKm}€ per kilometre. The exact price is shown before you confirm — no meter, no surprises.",
+  "points": {
+    "pickup": "Pickup anywhere in the Netherlands",
+    "confirm": "Driver confirmed within minutes",
+    "vehicle": "Recent vehicles, impeccable interior"
+  },
+  "stats": {
+    "ratingValue": "4.9/5",
+    "ratingLabel": "127 Google reviews",
+    "hoursValue": "24/7",
+    "hoursLabel": "7 days a week",
+    "ridesValue": "+2,000",
+    "ridesLabel": "rides completed"
+  },
+  "imgAlt": "Sedan taxi at night in a blue-lit city"
+},
+"bookingForm": {
+  "badge": "Instant booking",
+  "step1Title": "Where would you like to go?",
+  "step2Title": "Your booking details",
+  "departure": "Pickup",
+  "arrival": "Drop-off",
+  "swapTitle": "Swap addresses",
+  "chooseVehicle": "Choose your vehicle",
+  "calculating": "Calculating…",
+  "estimatedPrice": "Estimated price",
+  "enterAddresses": "Enter pickup and destination to see the price",
+  "distanceError": "Unable to calculate the distance for these addresses. Please check them and try again.",
+  "continue": "Continue",
+  "seePriceFirst": "See the price first",
+  "datetime": "Date & time",
+  "flightNumber": "Flight number",
+  "passengers": "Passengers",
+  "maxPassengers": "max",
+  "luggage": "Luggage",
+  "yourDetails": "Your details",
+  "fullName": "Full name *",
+  "phone": "+31 6 12 34 56 78 *",
+  "email": "Email *",
+  "notes": "Notes for the driver (optional)",
+  "back": "← Back",
+  "confirm": "Confirm",
+  "processing": "Processing…",
+  "securePayment": "Secure payment · Email confirmation",
+  "addressModes": {
+    "adres": "Address",
+    "postcode": "Postcode",
+    "internationaal": "International",
+    "vliegveld": "Airport"
+  },
+  "placeholders": {
+    "city": "City",
+    "street": "Street",
+    "international": "Address (city, country...)",
+    "chooseAirport": "Choose airport...",
+    "terminal": "Terminal"
+  },
+  "errors": {
+    "noDate": "Please choose a date and time.",
+    "tooSoon": "Booking must be made at least 2 hours in advance.",
+    "invalidPhone": "Invalid phone number.",
+    "invalidEmail": "Invalid email address.",
+    "serverError": "An error occurred.",
+    "networkError": "Unable to contact the server."
+  },
+  "confirmation": {
+    "title": "Booking confirmed",
+    "emailSent": "A confirmation email has been sent to",
+    "defaultEmail": "your address",
+    "reference": "Your reference",
+    "departure": "Pickup",
+    "arrival": "Drop-off",
+    "vehicle": "Vehicle",
+    "total": "Total",
+    "newBooking": "New booking"
+  }
+},
+"trustBar": {
+  "rating": "4.9/5 from +2,000 rides",
+  "payment": "100% secure payment",
+  "availability": "Available 24/7",
+  "verified": "Verified drivers"
+},
+"howItWorks": {
+  "eyebrow": "The journey",
+  "title": "Four steps, two minutes",
+  "subtitle": "A simple, transparent service, from booking to arrival at your destination.",
+  "steps": {
+    "route": {
+      "title": "Enter your route",
+      "text": "Fill in pickup, drop-off and time. The price appears instantly."
+    },
+    "pay": {
+      "title": "Pay online",
+      "text": "Pay securely by card, iDEAL or other payment methods."
+    },
+    "accept": {
+      "title": "A driver accepts",
+      "text": "Your request is sent instantly to our drivers. The first available one accepts it."
+    },
+    "enjoy": {
+      "title": "Enjoy the ride",
+      "text": "Track your ride status in real time until you arrive at your destination."
+    }
+  }
+},
+"pricingSection": {
+  "eyebrow": "Pricing",
+  "title": "Fixed price, known before you ride",
+  "subtitle": "A clear plan, no meter, no surprises: {base}€ base fare + {perKm}€ per kilometre.",
+  "vehicleAlt": "{name} vehicle",
+  "bookButton": "Book a {name}",
+  "perks": {
+    "sedan": ["3 suitcases + 2 hand luggage", "Ideal for city and airport", "Best value for money"],
+    "van": ["Up to 8 suitcases", "Perfect for groups", "Child seats on request"],
+    "luxury": ["Premium sedan", "Chauffeur in suit", "Water and wifi on board"]
+  }
+},
+"vehicles": {
+  "labels": {
+    "sedan": "Sedan",
+    "van": "Van (7 seats)",
+    "luxury": "Luxury"
+  },
+  "descriptions": {
+    "sedan": "1–4 passengers",
+    "van": "1–7 passengers",
+    "luxury": "1–3 passengers"
+  }
+},
+"googleReviews": {
+  "eyebrow": "Customer reviews",
+  "title": "What our passengers say",
+  "googleVerified": "127 verified Google reviews",
+  "starsLabel": "{count} stars out of 5",
+  "reviews": [
+    { "name": "Sophie M.", "count": "12 reviews", "text": "Punctual driver, impeccable car and very pleasant journey. I highly recommend this service for the airport!" },
+    { "name": "Karim B.", "count": "8 reviews", "text": "Perfect service, the driver helped me with my luggage and knew the routes perfectly. Very reasonable price." },
+    { "name": "Isabelle D.", "count": "21 reviews", "text": "Simple and fast booking. The taxi was there 5 minutes early. I only use this service now!" },
+    { "name": "Thomas R.", "count": "5 reviews", "text": "Excellent experience from start to finish. Immediate confirmation, friendly driver and fixed price with no surprises." },
+    { "name": "Amina L.", "count": "15 reviews", "text": "I was with my baby and suitcases, the driver was incredibly helpful. Thank you for this top service!" },
+    { "name": "Marc V.", "count": "33 reviews", "text": "Always on time, clean and comfortable car. My trusted taxi for all my professional trips." }
+  ]
+},
+"faq": {
+  "eyebrow": "FAQ",
+  "title": "Frequently asked questions",
+  "subtitle": "Everything you need to know before booking your ride.",
+  "categories": [
+    {
+      "title": "Booking process",
+      "questions": [
+        { "q": "What information do I need to provide?", "a": "Please provide your details as completely as possible: full address (with number), your name, phone number and flight number. This will allow us to take you to and from the right place on time." },
+        { "q": "How far in advance should I book?", "a": "You can book your taxi online in advance easily. Need a taxi quickly? Contact us directly at +31 (0) 66 666 6666." },
+        { "q": "Will I receive a booking confirmation?", "a": "Yes, you will immediately receive a confirmation email with your booking number, trip details and your driver's contact information." },
+        { "q": "Can I modify or cancel my booking?", "a": "You can modify or cancel your booking up to 2 hours before the trip by contacting us by phone or email. Late cancellations may incur charges." }
+      ]
+    },
+    {
+      "title": "Pricing & Payment",
+      "questions": [
+        { "q": "Fixed price or meter?", "a": "We exclusively use fixed prices calculated in advance: €4 base fare + €2.50/km. You know the exact price before confirming, with no nasty surprises on arrival." },
+        { "q": "What payment methods are accepted?", "a": "We accept credit cards (Visa, Mastercard, American Express), PayPal and iDEAL. Payment is made online at the time of booking, 100% securely." },
+        { "q": "Are there extra charges per passenger?", "a": "No, our price is calculated per trip, not per passenger. Whether you are 1 or 4 passengers in a sedan, the price remains the same. For groups of more than 4 people, a van is recommended." },
+        { "q": "Can I get an invoice?", "a": "Yes, a detailed invoice is automatically sent by email after your trip. It is perfect for your professional expense reports." }
+      ]
+    },
+    {
+      "title": "Luggage & Special requests",
+      "questions": [
+        { "q": "How much luggage can I bring?", "a": "A sedan can accommodate up to 3 suitcases in the boot and 2 hand luggage items. For more luggage, opt for the van which offers a much larger loading space." },
+        { "q": "I have bulky luggage, what should I do?", "a": "Note it in your booking notes. We will adapt the vehicle accordingly. For bicycles, foldable wheelchairs or ski equipment, contact us directly." },
+        { "q": "Can I travel with my pet?", "a": "Yes, pets are accepted in a transport cage. Please mention it in the booking notes so we can assign a compatible driver." },
+        { "q": "Do you have child seats?", "a": "Yes, we offer baby seats and boosters. Indicate your child's age and weight in the booking notes so we can provide the right seat." }
+      ]
+    }
+  ]
+},
+"footer": {
+  "description": "Book your ride in 2 minutes. Fixed price: €4 base fare + €2.50/km, known before you get in.",
+  "rating": "⭐ 4.9/5",
+  "securePayment": "🛡️ Secure payment",
+  "zonesTitle": "Our zones",
+  "taxiPrefix": "Taxi",
+  "contactTitle": "Contact",
+  "availability": "Available 24/7",
+  "rights": "All rights reserved.",
+  "legal": "Legal notice",
+  "terms": "Terms & conditions",
+  "defaultZones": [
+    { "slug": "amsterdam", "name": "Amsterdam" },
+    { "slug": "schiphol", "name": "Schiphol Airport" },
+    { "slug": "rotterdam", "name": "Rotterdam" },
+    { "slug": "the-hague", "name": "The Hague" },
+    { "slug": "utrecht", "name": "Utrecht" }
+  ]
+}
+}
