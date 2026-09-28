@@ -103,7 +103,7 @@
   }
 },
 "trustBar": {
-  "rating": "4,9/5 op +2.000 ritten",
+  "rating": "100% ophaalgarantie",
   "payment": "100% veilig betalen",
   "availability": "24/7 beschikbaar",
   "verified": "Geverifieerde chauffeurs"
@@ -205,7 +205,7 @@
 },
 "footer": {
   "description": "Boek uw rit in 2 minuten. Vaste prijs: €4 starttarief + €2,50/km, bekend vóór vertrek.",
-  "rating": "⭐ 4,9/5",
+  "rating": "",
   "securePayment": "🛡️ Veilig betalen",
   "zonesTitle": "Onze zones",
   "taxiPrefix": "Taxi",
