@@ -24,12 +24,12 @@
 "hero": {
   "badge": "Taxi & luchthaventransfers",
   "title": "Uw taxi tegen vaste prijs,",
-  "titleAccent": "geboekt in 2 minuten.",
+  "titleAccent": "geboekt in 2 minuten. 100% ophaalgarantie",
   "subtitle": "{base}€ starttarief + {perKm}€ per kilometer. De exacte prijs wordt getoond vóór bevestiging — geen meter, geen verrassingen.",
   "points": {
-    "pickup": "Ophalen overal in Nederland",
-    "confirm": "Chauffeur bevestigd binnen enkele minuten",
-    "vehicle": "Recente voertuigen, onberispelijk interieur"
+    "pickup": "Overal ophalen in Nederland",
+    "confirm": "Geverifieerde chauffeurs",
+    "vehicle": "0% annuleringsratio"
   },
   "stats": {
     "ratingValue": "4,9/5",
