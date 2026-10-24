@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { admins } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export const ADMIN_COOKIE_NAME = "taxi_admin_session";
+export const ADMIN_COOKIE_NAME = "cabix_admin_session";
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 12; // 12h
 
 // ─── Signature HMAC du cookie ────────────────────────────────────────────────

@@ -26,7 +26,7 @@ export const drivers = mysqlTable("drivers", {
   lastName: varchar("last_name", { length: 50 }).notNull().default(""),
   email: varchar("email", { length: 100 }),
   phone: varchar("phone", { length: 20 }).notNull().default(""),
-  pNumber: varchar("p_number", { length: 50 }),           // Chauffeurskaart P-nummer
+  pNumber: varchar("p_number", { length: 50 }),
 
   // Telegram
   telegramChatId: bigint("telegram_chat_id", { mode: "number" }),
@@ -53,7 +53,7 @@ export const drivers = mysqlTable("drivers", {
   paymentCycle: mysqlEnum("payment_cycle", ["daily", "weekly", "monthly"]).default("daily"),
 
   // Documenten (Telegram file_id)
-  insuranceFileId: varchar("insurance_file_id", { length: 500 }),      // était 200
+  insuranceFileId: varchar("insurance_file_id", { length: 500 }),
   insuranceExpiry: date("insurance_expiry"),
   driversLicenseFileId: varchar("drivers_license_file_id", { length: 500 }),
   driversLicenseExpiry: date("drivers_license_expiry"),
@@ -93,8 +93,8 @@ export const bookings = mysqlTable("bookings", {
   basePrice: decimal("base_price", { precision: 10, scale: 2 }).notNull().default("4.00"),
   pricePerKm: decimal("price_per_km", { precision: 5, scale: 2 }).notNull().default("2.50"),
   totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
-  offeredPrice:        decimal("offered_price", { precision: 10, scale: 2 }),
-  telegramGroupMsgId:  bigint("telegram_group_msg_id", { mode: "number" }),
+  offeredPrice: decimal("offered_price", { precision: 10, scale: 2 }),
+  telegramGroupMsgId: bigint("telegram_group_msg_id", { mode: "number" }),
   driverId: int("driver_id").references(() => drivers.id),
   driverAcceptedAt: timestamp("driver_accepted_at"),
   status: mysqlEnum("status", ["pending", "paid", "sent_to_drivers", "accepted", "driver_on_way", "passenger_picked", "completed", "cancelled"]).notNull().default("pending"),
@@ -136,23 +136,22 @@ export const admins = mysqlTable("admins", {
 
 export const auditLogs = mysqlTable("audit_logs", {
   id: int("id").autoincrement().primaryKey(),
-
-  // Qui a fait l'action
-  adminId:   int("admin_id").references(() => admins.id),
-  adminName: varchar("admin_name", { length: 100 }),   // snapshot du nom au moment de l'action
-
-  // Quelle action
+  adminId: int("admin_id").references(() => admins.id),
+  adminName: varchar("admin_name", { length: 100 }),
   action: varchar("action", { length: 100 }).notNull(),
-  // ex: "driver.verified", "driver.deleted", "booking.status_changed", "driver.updated"
-
-  // Sur quelle entité
   entityType: mysqlEnum("entity_type", ["driver", "booking", "zone", "admin"]).notNull(),
-  entityId:   int("entity_id"),
-  entityLabel: varchar("entity_label", { length: 200 }), // ex: "Jean Dupont" ou "REF-12345"
-
-  // Détail du changement (avant / après)
+  entityId: int("entity_id"),
+  entityLabel: varchar("entity_label", { length: 200 }),
   meta: json("meta"),
-  // ex: { before: { status: "pending" }, after: { status: "accepted" } }
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
 
+// ─── Nouvelle table : alertes admin ──────────────────────────────────────────
+export const adminAlerts = mysqlTable("admin_alerts", {
+  id: int("id").autoincrement().primaryKey(),
+  type: varchar("type", { length: 100 }).notNull(),
+  bookingId: int("booking_id").references(() => bookings.id),
+  message: text("message").notNull(),
+  isRead: boolean("is_read").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });

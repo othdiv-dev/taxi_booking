@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       return uploadPrivateDocument(
         buffer,
         filename,
-        `taxi-booking/drivers/${slug}/${folder}`,
+        `cabix/drivers/${slug}/${folder}`,
         detectedMime
       );
     }

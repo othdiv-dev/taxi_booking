@@ -1,7 +1,7 @@
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq, ne, desc } from "drizzle-orm";
 import { db } from "@/db";
 import { bookings, drivers, telegramNotifications } from "@/db/schema";
-import { markBookingAccepted, sendBookingToGroup, type TelegramBooking } from "@/lib/telegram";
+import { markBookingAccepted, sendBookingToGroup, deleteMessage, type TelegramBooking } from "@/lib/telegram";
 
 function toTelegramBooking(booking: typeof bookings.$inferSelect): TelegramBooking {
   return {
@@ -14,6 +14,7 @@ function toTelegramBooking(booking: typeof bookings.$inferSelect): TelegramBooki
     vehicleType: booking.vehicleType,
     distanceKm: booking.distanceKm,
     totalPrice: booking.totalPrice,
+    offeredPrice: booking.offeredPrice,
     customerName: booking.customerName,
     customerPhone: booking.customerPhone,
     flightNumber: booking.flightNumber,
@@ -46,7 +47,6 @@ export async function markBookingPaid(bookingId: number) {
   if (!booking) return;
   if (booking.status !== "pending") return;
 
-  // Plus d'envoi automatique — l'admin valide le prix et envoie manuellement
   await db.update(bookings)
     .set({ status: "paid", updatedAt: new Date() })
     .where(eq(bookings.id, bookingId));
@@ -64,23 +64,22 @@ export async function acceptBookingByDriver(bookingId: number, user: TelegramUse
   if (!booking) return { ok: false, message: "❌ Course introuvable." };
 
   if (!["paid", "sent_to_drivers"].includes(booking.status)) {
-    return { ok: false, message: "❌ Cette course a déjà été prise ou n'est plus disponible." };
+    return { ok: false, message: "❌ Deze rit is al ingenomen of niet meer beschikbaar." };
   }
 
-  // ✅ FIX — Vérifier que le chauffeur est inscrit ET validé
   const [driver] = await db.select().from(drivers).where(eq(drivers.telegramChatId, user.id));
 
   if (!driver) {
     return {
       ok: false,
-      message: "❌ Vous n'êtes pas encore inscrit.\n\nEnvoyez /aanmelden pour vous inscrire.",
+      message: "❌ U bent nog niet geregistreerd.\n\nStuur /aanmelden om u te registreren.",
     };
   }
 
   if (!driver.isVerified || !driver.isActive) {
     return {
       ok: false,
-      message: "⏳ Votre compte est en attente de validation par l'administrateur.\n\nVous recevrez un message dès que votre compte sera activé.",
+      message: "⏳ Uw account wacht op validatie door de beheerder.\n\nU ontvangt hier bericht zodra uw account is geactiveerd.",
     };
   }
 
@@ -95,14 +94,13 @@ export async function acceptBookingByDriver(bookingId: number, user: TelegramUse
     })
     .where(and(eq(bookings.id, bookingId), ne(bookings.status, "accepted")));
 
-  // Vérifier si c'est bien CE chauffeur qui a obtenu la course
   const [updatedBooking] = await db.select().from(bookings).where(eq(bookings.id, bookingId));
 
   if (!updatedBooking || updatedBooking.driverId !== driver.id) {
-    return { ok: false, message: "❌ Un autre chauffeur a déjà accepté cette course." };
+    return { ok: false, message: "❌ Een andere chauffeur heeft deze rit al geaccepteerd." };
   }
 
-  // Mettre à jour la notification Telegram et éditer le message
+  // Supprimer le message groupe
   const [notification] = await db
     .select()
     .from(telegramNotifications)
@@ -120,15 +118,75 @@ export async function acceptBookingByDriver(bookingId: number, user: TelegramUse
       notification.chatId,
       notification.messageId,
       toTelegramBooking(updatedBooking),
-      driverName
+      driverName,
     );
   }
 
-  // ✅ Incrémenter le compteur de courses du chauffeur
+  // Incrémenter le compteur de courses du chauffeur
   await db
     .update(drivers)
     .set({ totalTrips: driver.totalTrips + 1, updatedAt: new Date() })
     .where(eq(drivers.id, driver.id));
 
-  return { ok: true, message: `✅ Course ${booking.reference} acceptée ! Bonne route ${driverName} 🚖` };
+  // Le message privé est envoyé depuis route.ts après cette fonction
+  return { ok: true, message: `✅ Rit ${booking.reference} geaccepteerd! Goede reis ${driverName} 🚖`, booking: toTelegramBooking(updatedBooking) };
+}
+
+/** Annule la course par le chauffeur : remet en sent_to_drivers et republish sur le groupe */
+export async function cancelBookingByDriver(bookingId: number) {
+  const [booking] = await db.select().from(bookings).where(eq(bookings.id, bookingId));
+  if (!booking) return { ok: false, reference: "" };
+
+  // Récupérer l'ancienne notification pour supprimer le message "Toegewezen" du groupe
+  const [oldNotification] = await db
+    .select()
+    .from(telegramNotifications)
+    .where(eq(telegramNotifications.bookingId, bookingId))
+    .orderBy(desc(telegramNotifications.id))
+    .limit(1);
+
+  // Supprimer le message "Toegewezen" du groupe
+  if (oldNotification) {
+    try {
+      await deleteMessage(oldNotification.chatId, oldNotification.messageId);
+    } catch (e) {
+      console.warn("deleteMessage (Toegewezen) failed:", e);
+    }
+    // Supprimer l'ancienne notification pour éviter les conflits
+    await db.delete(telegramNotifications).where(eq(telegramNotifications.bookingId, bookingId));
+  }
+
+  // Remettre la course disponible
+  await db.update(bookings).set({
+    status: "sent_to_drivers",
+    driverId: null,
+    driverAcceptedAt: null,
+    telegramGroupMsgId: null,
+    updatedAt: new Date(),
+  }).where(eq(bookings.id, bookingId));
+
+  // Republier la course sur le groupe
+  const result = await sendBookingToGroup(bookingId, toTelegramBooking(booking));
+  if (result) {
+    await db.insert(telegramNotifications).values({
+      bookingId,
+      messageId: result.message_id,
+      chatId: result.chat.id,
+      status: "sent",
+    });
+  }
+
+  return { ok: true, reference: booking.reference };
+}
+
+export async function setDriverOnWay(bookingId: number) {
+  await db.update(bookings).set({ status: "driver_on_way", updatedAt: new Date() }).where(eq(bookings.id, bookingId));
+}
+
+export async function setPassengerPicked(bookingId: number) {
+  await db.update(bookings).set({ status: "passenger_picked", updatedAt: new Date() }).where(eq(bookings.id, bookingId));
+}
+
+export async function completeBooking(bookingId: number) {
+  await db.update(bookings).set({ status: "completed", updatedAt: new Date() }).where(eq(bookings.id, bookingId));
 }

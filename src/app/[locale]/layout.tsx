@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { GoogleMapsScript } from "@/components/GoogleMapsScript";
 
 export async function generateMetadata({
   params,
@@ -37,7 +38,13 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
+  const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
+
   return (
-    <NextIntlClientProvider>{children}</NextIntlClientProvider>
+    <NextIntlClientProvider>
+      {/* Composant client — onLoad autorisé uniquement côté client */}
+      {mapsKey && <GoogleMapsScript apiKey={mapsKey} locale={locale} />}
+      {children}
+    </NextIntlClientProvider>
   );
 }

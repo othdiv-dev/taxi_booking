@@ -112,8 +112,8 @@ export type DocumentRef = string;
 /**
  * Compresse (images) et uploade vers Cloudinary en mode authentifié (privé).
  *
- * Format stocké en DB : "raw:taxi-booking/drivers/.../file.jpg"
- *                    ou "raw:taxi-booking/drivers/.../file.pdf"
+ * Format stocké en DB : "raw:cabix/drivers/.../file.jpg"
+ *                    ou "raw:cabix/drivers/.../file.pdf"
  *
  * Toujours resource_type "raw" + extension dans le public_id →
  * Content-Type correct à la livraison, URL signée toujours valide.
@@ -212,7 +212,7 @@ export async function uploadTelegramFileToCloudinary(
     if (!json.ok) return null;
     const fileUrl = `https://api.telegram.org/file/bot${token}/${json.result.file_path}`;
     const result  = await cld.uploader.upload(fileUrl, {
-      folder:        `taxi-booking/${folder}`,
+      folder:        `cabix/${folder}`,
       resource_type: "auto",
     });
     return result.secure_url;

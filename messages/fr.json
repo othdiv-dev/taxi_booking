@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "CityTaxi - Réservation de taxi en ligne",
+    "title": "Cabix - Réservation de taxi en ligne",
     "description": "Réservez votre taxi en 2 minutes : 4€ prise en charge + 2,50€/km, paiement sécurisé, chauffeurs vérifiés, 24h/24."
   },
   "header": {
@@ -15,7 +15,7 @@
   },
   "chauffeurConfirmation": {
   "title": "Candidature reçue !",
-  "thanksLine1": "Merci de votre inscription chez CityTaxi.",
+  "thanksLine1": "Merci de votre inscription chez Cabix.",
   "reviewLine": "Votre candidature sera examinée sous 48 heures.",
   "notifyLine": "Vous recevrez un message dès que votre compte sera activé.",
   "checkEmail": "📧 Vérifiez votre email pour une confirmation.",

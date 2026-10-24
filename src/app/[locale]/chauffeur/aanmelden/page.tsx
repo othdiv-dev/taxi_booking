@@ -14,8 +14,8 @@ type Lang = "nl" | "en" | "fr";
 const T = {
   nl: {
   title: "Chauffeur worden",
-  badge: "CityTaxi Chauffeur",
-  subtitle: "Registreer u als chauffeur bij CityTaxi",
+  badge: "Cabix Chauffeur",
+  subtitle: "Registreer u als chauffeur bij Cabix",
   step: (n: number, t: number) => `Stap ${n} van ${t}`,
   next: "Volgende", prev: "Terug", submit: "Aanmelding versturen", submitting: "Bezig...",
   uploadStages: { preparing: "Documenten voorbereiden…", uploading: "Documenten uploaden…", processing: "Aanmelding verwerken…", done: "Gelukt! U wordt doorgestuurd…" },
@@ -51,8 +51,8 @@ const T = {
 },
   en: {
   title: "Become a driver",
-  badge: "CityTaxi Driver",
-  subtitle: "Register as a driver at CityTaxi",
+  badge: "Cabix Driver",
+  subtitle: "Register as a driver at Cabix",
   step: (n: number, t: number) => `Step ${n} of ${t}`,
   next: "Next", prev: "Back", submit: "Submit application", submitting: "Submitting...",
   uploadStages: { preparing: "Preparing documents…", uploading: "Uploading documents…", processing: "Processing application…", done: "Done! Redirecting you…" },
@@ -89,8 +89,8 @@ const T = {
 
   fr: {
   title: "Devenir chauffeur",
-  badge: "Chauffeur CityTaxi",
-  subtitle: "Inscrivez-vous comme chauffeur chez CityTaxi",
+  badge: "Chauffeur Cabix",
+  subtitle: "Inscrivez-vous comme chauffeur chez Cabix",
   step: (n: number, t: number) => `Étape ${n} sur ${t}`,
   next: "Suivant", prev: "Retour", submit: "Envoyer ma candidature", submitting: "Envoi en cours...",
   uploadStages: { preparing: "Préparation des fichiers…", uploading: "Envoi des documents…", processing: "Traitement en cours…", done: "Terminé ! Redirection en cours…" },

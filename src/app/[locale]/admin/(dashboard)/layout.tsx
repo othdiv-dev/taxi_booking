@@ -4,7 +4,7 @@ import { logoutAction } from "../actions";
 import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import AdminNav from "@/components/admin/AdminNav";
-
+import AlertBanner from "@/components/admin/AlertBanner";
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {
   const session = await getAdminSession();
   const locale = await getLocale();
@@ -37,6 +37,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
         </div>
 
       </div>
+      <AlertBanner />
     </div>
   );
 }

@@ -42,7 +42,7 @@ export default async function ZonePage({ params }: { params: Promise<{ zone: str
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TaxiService",
-    name: `CityTaxi ${zone.name}`,
+    name: `Cabix ${zone.name}`,
     areaServed: zone.name,
     priceRange: "€€",
   };

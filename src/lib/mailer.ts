@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM = process.env.FROM_EMAIL || "noreply@citytaxi.com";
+const FROM = process.env.FROM_EMAIL || "noreply@cabix.com";
 
 export type BookingEmailData = {
   to: string;
@@ -44,7 +44,7 @@ export async function sendBookingConfirmation(data: BookingEmailData) {
         <!-- Header -->
         <tr><td style="background:linear-gradient(135deg,#0f172a,#1e293b);padding:32px 40px;text-align:center;">
           <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;color:#fbbf24;text-transform:uppercase;">Réservation confirmée</p>
-          <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;">🚕 CityTaxi</h1>
+          <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;">🚕 Cabix</h1>
         </td></tr>
 
         <!-- Greeting -->
@@ -140,7 +140,7 @@ export async function sendBookingConfirmation(data: BookingEmailData) {
             📞 +31 (0) 20 244 5555
           </p>
           <p style="margin:24px 0 0;font-size:11px;color:#cbd5e1;">
-            © CityTaxi · Tous droits réservés
+            © Cabix · Tous droits réservés
           </p>
         </td></tr>
 
@@ -153,7 +153,7 @@ export async function sendBookingConfirmation(data: BookingEmailData) {
   await resend.emails.send({
     from: FROM,
     to: data.to,
-    subject: `✅ Réservation confirmée — ${data.reference} | CityTaxi`,
+    subject: `✅ Réservation confirmée — ${data.reference} | Cabix`,
     html,
   });
 }

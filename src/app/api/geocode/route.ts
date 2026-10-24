@@ -1,52 +1,56 @@
 import { NextResponse } from "next/server";
 
-// Proxy côté serveur pour Nominatim — évite les problèmes CORS du navigateur
-// et garde l'User-Agent correct pour respecter les conditions d'utilisation OSM.
-
+// Google Geocoding API — remplace Nominatim/OSM
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q")?.trim();
-  const countryCodes = searchParams.get("countryCodes") ?? "";
-  const featureType = searchParams.get("featureType") ?? ""; // "city" | "street" | ""
 
   if (!q || q.length < 2) {
     return NextResponse.json([], { status: 200 });
   }
 
+  const key = process.env.GOOGLE_MAPS_BACKEND_KEY;
+  if (!key) {
+    console.error("[geocode] GOOGLE_MAPS_BACKEND_KEY manquant");
+    return NextResponse.json([], { status: 200 });
+  }
+
   try {
     const params = new URLSearchParams({
-      q,
-      format: "json",
-      addressdetails: "1",
-      limit: "6",
-      "accept-language": "fr,nl,en",
+      address:  q,
+      region:       "nl",
+      language:     "nl",
+      components:   "country:nl",
+      key,
     });
 
-    if (countryCodes) params.set("countrycodes", countryCodes);
-
-    // Nominatim supporte featuretype nativement : settlement, street, …
-    if (featureType === "city") params.set("featuretype", "settlement");
-    if (featureType === "street") params.set("featuretype", "street");
-
     const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?${params.toString()}`,
-      {
-        headers: {
-          "User-Agent": "taxi-booking-app/1.0 (citytaxi.nl)",
-          "Accept": "application/json",
-        },
-        // Next.js : pas de cache pour avoir des résultats frais
-        cache: "no-store",
-      }
+      `https://maps.googleapis.com/maps/api/geocode/json?${params.toString()}`,
+      { cache: "no-store" }
     );
 
-    if (!res.ok) {
+    if (!res.ok) return NextResponse.json([], { status: 200 });
+
+    const data = await res.json();
+
+    if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
+      console.error("[geocode] Google API error:", data.status, data.error_message);
       return NextResponse.json([], { status: 200 });
     }
 
-    const data = await res.json();
-    return NextResponse.json(data);
-  } catch {
+    // Normaliser au même format qu'avant (compatible avec le reste du code)
+    const results = (data.results ?? []).map((r: {
+      formatted_address: string;
+      geometry: { location: { lat: number; lng: number } };
+    }) => ({
+      display_name: r.formatted_address,
+      lat:          String(r.geometry.location.lat),
+      lon:          String(r.geometry.location.lng),
+    }));
+
+    return NextResponse.json(results);
+  } catch (err) {
+    console.error("[geocode] Erreur:", err);
     return NextResponse.json([], { status: 200 });
   }
 }

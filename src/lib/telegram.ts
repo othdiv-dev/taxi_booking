@@ -8,6 +8,7 @@ export type TelegramBooking = {
   vehicleType: string;
   distanceKm: string | number;
   totalPrice: string | number;
+  offeredPrice?: string | number | null;
   customerName: string;
   customerPhone: string;
   flightNumber?: string | null;
@@ -52,6 +53,10 @@ function formatBookingMessage(booking: TelegramBooking, statusLine = "🟡 En at
     timeZone: "Europe/Amsterdam",
   });
 
+  const displayPrice = booking.offeredPrice
+    ? Number(booking.offeredPrice).toFixed(2)
+    : Number(booking.totalPrice).toFixed(2);
+
   return [
     `🚖 *Nouvelle course - ${booking.reference}*`,
     "",
@@ -62,7 +67,7 @@ function formatBookingMessage(booking: TelegramBooking, statusLine = "🟡 En at
     `📏 *Distance:* ${booking.distanceKm} km`,
     `👥 *Passagers:* ${booking.passengers} · 🧳 *Bagages:* ${booking.luggage}`,
     `🚗 *Véhicule:* ${booking.vehicleType}`,
-    `💶 *Prix:* ${Number(booking.totalPrice).toFixed(2)}€`,
+    `💶 *Prix:* ${displayPrice}€`,
     booking.customerNotes ? `📝 *Notes:* ${booking.customerNotes}` : null,
     "",
     statusLine,
@@ -102,15 +107,18 @@ export async function markBookingAccepted(
   booking: TelegramBooking,
   driverName: string,
 ) {
-  // Supprimer le message du groupe — la course est prise, les autres chauffeurs n'ont plus à la voir
-  await deleteMessage(chatId, messageId);
-
-  // Envoyer un message discret de confirmation dans le groupe (optionnel, peut être retiré)
-  await telegramApi("sendMessage", {
-    chat_id: chatId,
-    text: `✅ Course *${booking.reference}* acceptée `,
-    parse_mode: "Markdown",
-  });
+  // Remplacer le message du groupe par une confirmation simple (sans nom de chauffeur)
+  try {
+    await telegramApi("editMessageText", {
+      chat_id: chatId,
+      message_id: messageId,
+      text: `✅ Rit *#${booking.reference}* — Toegewezen`,
+      parse_mode: "Markdown",
+      reply_markup: { inline_keyboard: [] },
+    });
+  } catch (e) {
+    console.warn("markBookingAccepted editMessage failed (non-bloquant):", e);
+  }
 }
 
 export async function answerCallbackQuery(callbackQueryId: string, text: string, showAlert = false) {
@@ -142,6 +150,7 @@ export async function telegramSend(chatId: number, text: string) {
     }),
   });
 }
+
 export async function notifyAdminNewDriver(driver: {
   firstName: string;
   lastName: string;
@@ -168,7 +177,6 @@ export async function notifyAdminNewDriver(driver: {
   });
 }
 
-// Message privé au chauffeur validé
 export async function notifyDriverValidated(telegramChatId: number, firstName: string) {
   const groupLink = process.env.TELEGRAM_GROUP_LINK;
 
@@ -184,3 +192,78 @@ export async function notifyDriverValidated(telegramChatId: number, firstName: s
   });
 }
 
+// ─── Flux chauffeur après acceptation ────────────────────────────────────────
+
+/** Formate le bloc d'infos complet de la course — réutilisé partout */
+export function formatDriverBookingMessage(booking: TelegramBooking, statusLine?: string): string {
+  const dt = new Date(booking.pickupDatetime);
+  const formattedDate = dt.toLocaleString("nl-NL", {
+    day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
+    timeZone: "Europe/Amsterdam",
+  });
+
+  // Toujours utiliser offeredPrice si disponible
+  const displayPrice = booking.offeredPrice
+    ? Number(booking.offeredPrice).toFixed(2)
+    : Number(booking.totalPrice).toFixed(2);
+
+  const lines = [
+    `🚖 *Rit #${booking.reference}:* ${formattedDate}`,
+    `auto : ${booking.passengers}pax.`,
+    `Van: ${booking.pickupAddress}`,
+    `Naar: ${booking.dropoffAddress}`,
+    `[Bekijk route](https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(booking.pickupAddress)}&destination=${encodeURIComponent(booking.dropoffAddress)})`,
+    `Chauffeursprijs: € ${displayPrice}`,
+    `Ruimbagage: ${booking.luggage > 0 ? "Ja" : "Nee"}`,
+    `Contactpersoon: ${booking.customerName} ${booking.customerPhone}`,
+    `Betaal methode: ONLINE`,
+  ];
+
+  if (booking.customerNotes) {
+    lines.push(``, `*Bericht van klant: ${booking.customerNotes}*`);
+  }
+
+  if (statusLine) {
+    lines.push(``, statusLine);
+  }
+
+  return lines.join("\n");
+}
+
+/** Envoie le message privé au chauffeur après acceptation */
+export async function sendDriverPrivateBooking(
+  driverChatId: number,
+  bookingId: number,
+  booking: TelegramBooking,
+): Promise<{ message_id: number } | null> {
+  const text = formatDriverBookingMessage(booking, `✅ *Status: Toegewezen*`);
+  return telegramApi<{ message_id: number }>("sendMessage", {
+    chat_id: driverChatId,
+    text,
+    parse_mode: "Markdown",
+    disable_web_page_preview: true,
+    reply_markup: {
+      inline_keyboard: [[
+        { text: "❌ Annuleren",            callback_data: `cancel_confirm:${bookingId}` },
+        { text: "🚗 Onderweg naar klant", callback_data: `on_way:${bookingId}` },
+      ]],
+    },
+  });
+}
+
+/** Édite le message privé chauffeur */
+export async function editDriverMessage(
+  chatId: number,
+  messageId: number,
+  text: string,
+  inlineKeyboard: Array<Array<{ text: string; callback_data: string }>> = [],
+) {
+  await telegramApi("editMessageText", {
+    chat_id: chatId,
+    message_id: messageId,
+    text,
+    parse_mode: "Markdown",
+    disable_web_page_preview: true,
+    reply_markup: inlineKeyboard.length > 0 ? { inline_keyboard: inlineKeyboard } : { inline_keyboard: [] },
+  });
+}

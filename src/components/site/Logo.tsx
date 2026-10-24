@@ -28,7 +28,7 @@ export function Wordmark({ inverted = false }: { inverted?: boolean }) {
           inverted ? "text-navy-foreground" : "text-foreground"
         }`}
       >
-        Book<span className="text-primary">Taxi</span>
+        Cab<span className="text-primary">ix</span>
       </span>
     </span>
   );

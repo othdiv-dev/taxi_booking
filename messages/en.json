@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "CityTaxi - Book a taxi online",
+    "title": "Cabix - Book a taxi online",
     "description": "Book your taxi in 2 minutes: €4 base fare + €2.50/km, secure payment, verified drivers, 24/7."
   },
   "header": {
@@ -15,7 +15,7 @@
   },
   "chauffeurConfirmation": {
   "title": "Application received!",
-  "thanksLine1": "Thank you for registering with CityTaxi.",
+  "thanksLine1": "Thank you for registering with Cabix.",
   "reviewLine": "Your application will be reviewed within 48 hours.",
   "notifyLine": "You will receive a message once your account is activated.",
   "checkEmail": "📧 Check your email for a confirmation.",

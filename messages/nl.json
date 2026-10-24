@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "CityTaxi - Online taxi boeken",
+    "title": "Cabix - Online taxi boeken",
     "description": "Boek uw taxi in 2 minuten: €4 starttarief + €2,50/km, veilig betalen, geverifieerde chauffeurs, 24/7."
   },
   "header": {
@@ -15,7 +15,7 @@
   },
   "chauffeurConfirmation": {
   "title": "Aanmelding ontvangen!",
-  "thanksLine1": "Bedankt voor uw registratie bij CityTaxi.",
+  "thanksLine1": "Bedankt voor uw registratie bij Cabix.",
   "reviewLine": "Uw aanmelding wordt binnen 48 uur beoordeeld.",
   "notifyLine": "U ontvangt een bericht zodra uw account is geactiveerd.",
   "checkEmail": "📧 Controleer uw e-mail voor een bevestiging.",

@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
             <LogoMark className="h-14 w-14" />
           </div>
           <h1 className="font-display text-2xl font-extrabold text-navy-foreground">
-            City<span className="text-aqua">Taxi</span>
+            Cab<span className="text-aqua">ix</span>
           </h1>
           <p className="mt-1 text-sm text-navy-muted">Espace Administration</p>
         </div>

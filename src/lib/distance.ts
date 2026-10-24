@@ -1,69 +1,67 @@
+// Google Routes API — remplace OSRM + Nominatim
 export type DistanceResult = {
-  distanceKm: number;
+  distanceKm:      number;
   durationMinutes: number;
-  source: "osrm";
+  source:          "google";
 };
 
-// Cache en mémoire pour éviter les appels répétés à Nominatim
-const geocodeCache = new Map<string, { lat: number; lon: number } | null>();
-
-async function geocode(address: string): Promise<{ lat: number; lon: number } | null> {
-  const key = address.toLowerCase().trim();
-  if (geocodeCache.has(key)) return geocodeCache.get(key)!;
-  if (key.length < 3) { geocodeCache.set(key, null); return null; }
-
-  // Nettoyer l'adresse aéroport
-  const cleanAddress = address
-    .replace(/,?\s*Terminal\s*\w*/gi, "")
-    .replace(/\(AMS\)|\(RTM\)|\(EIN\)|\(BRU\)|\(DUS\)|\(FRA\)/gi, "")
-    .trim();
-
-  try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cleanAddress)}&format=json&limit=1&countrycodes=nl,be,de,fr,gb`;
-    const res = await fetch(url, {
-      headers: { "User-Agent": "taxi-booking-app/1.0" },
-      signal: AbortSignal.timeout(5000),
-    });
-    if (!res.ok) { geocodeCache.set(key, null); return null; }
-    const data = await res.json();
-    if (!data.length) { geocodeCache.set(key, null); return null; }
-    const result = { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
-    geocodeCache.set(key, result);
-    return result;
-  } catch {
+export async function calculateDistance(
+  pickup:  string,
+  dropoff: string
+): Promise<DistanceResult | null> {
+  const key = process.env.GOOGLE_MAPS_BACKEND_KEY;
+  if (!key) {
+    console.error("[distance] GOOGLE_MAPS_BACKEND_KEY manquant");
     return null;
   }
-}
 
-async function osrmDistance(pickup: string, dropoff: string): Promise<DistanceResult | null> {
+  // Nettoyer les labels aéroport (Terminal X, code IATA)
+  const clean = (addr: string) =>
+    addr
+      .replace(/,?\s*Terminal\s*\w*/gi, "")
+      .replace(/\(AMS\)|\(RTM\)|\(EIN\)|\(BRU\)|\(DUS\)|\(FRA\)/gi, "")
+      .trim();
+
   try {
-    const from = await geocode(pickup);
-    if (!from) return null;
+    const res = await fetch(
+      "https://routes.googleapis.com/directions/v2:computeRoutes",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":      "application/json",
+          "X-Goog-Api-Key":    key,
+          // Demander uniquement les champs nécessaires (réduit la facturation)
+          "X-Goog-FieldMask":  "routes.distanceMeters,routes.duration",
+        },
+        body: JSON.stringify({
+          origin:      { address: clean(pickup)  },
+          destination: { address: clean(dropoff) },
+          travelMode:  "DRIVE",
+          routingPreference: "TRAFFIC_UNAWARE",
+        }),
+        signal: AbortSignal.timeout(8000),
+      }
+    );
 
-    await new Promise(r => setTimeout(r, 1100));
+    if (!res.ok) {
+      console.error("[distance] Routes API HTTP error:", res.status);
+      return null;
+    }
 
-    const to = await geocode(dropoff);
-    if (!to) return null;
-
-    const url = `https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}?overview=false`;
-    const res = await fetch(url, {
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) return null;
     const data = await res.json();
+    const route = data.routes?.[0];
+    if (!route) return null;
 
-    if (data.code !== "Ok" || !data.routes?.length) return null;
+    // duration est une string "123s" — enlever le "s" et convertir
+    const durationSec = parseInt(String(route.duration).replace("s", ""), 10);
 
-    const route = data.routes[0];
-    const distanceKm = Math.round((route.distance / 1000) * 10) / 10;
-    const durationMinutes = Math.round(route.duration / 60);
-
-    return { distanceKm, durationMinutes, source: "osrm" };
-  } catch {
+    return {
+      distanceKm:      Math.round((route.distanceMeters / 1000) * 10) / 10,
+      durationMinutes: Math.ceil(durationSec / 60),
+      source:          "google",
+    };
+  } catch (err) {
+    console.error("[distance] Erreur:", err);
     return null;
   }
-}
-
-export async function calculateDistance(pickup: string, dropoff: string): Promise<DistanceResult | null> {
-  return await osrmDistance(pickup, dropoff);
 }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpDown, Check, Loader2, Lock, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const sedanImg = "/assets/vehicle-sedan.jpg";
 const vanImg = "/assets/vehicle-van.jpg";
@@ -30,14 +31,19 @@ function useZones(): Zone[] {
   return zones;
 }
 
+// Déclaration globale pour window.google (chargé via Script next/script)
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    google?: any;
+  }
+}
 
-type AddressMode = "adres" | "postcode" | "internationaal" | "vliegveld";
+type AddressMode = "adres" | "vliegveld";
 
 type AddressValue = {
   mode: AddressMode;
   city: string; street: string; number: string;
-  postcode: string; postcodeNumber: string;
-  international: string;
   airport: string; terminal: string;
 };
 
@@ -58,14 +64,12 @@ const inputCls = "w-full rounded-xl border border-border bg-muted/60 px-3 py-2.5
 const selectCls = "w-full rounded-xl border border-border bg-muted/60 px-3 py-2.5 text-sm text-foreground outline-none transition focus:border-primary focus:bg-card focus:ring-2 focus:ring-ring/25 appearance-none cursor-pointer";
 
 function emptyAddress(mode: AddressMode = "adres"): AddressValue {
-  return { mode, city: "", street: "", number: "", postcode: "", postcodeNumber: "", international: "", airport: "", terminal: "" };
+  return { mode, city: "", street: "", number: "", airport: "", terminal: "" };
 }
 
 function buildFullAddress(addr: AddressValue): string {
   switch (addr.mode) {
     case "adres": return [addr.street && addr.number ? `${addr.street} ${addr.number}` : addr.street, addr.city].filter(Boolean).join(", ");
-    case "postcode": return [addr.postcode && addr.postcodeNumber ? `${addr.postcode} ${addr.postcodeNumber}` : addr.postcode].filter(Boolean).join(", ");
-    case "internationaal": return addr.international;
     case "vliegveld": return [addr.airport, addr.terminal ? `Terminal ${addr.terminal}` : ""].filter(Boolean).join(", ");
   }
 }
@@ -81,13 +85,86 @@ function AddressBlock({ type, value, onChange, zones }: {
 }) {
   const t = useTranslations("bookingForm");
   const isPickup = type === "pickup";
-  // "other" = ville hors liste, saisie libre
   const [cityMode, setCityMode] = useState<"list" | "other">("list");
+
+  // ── Places API (New) — AutocompleteSuggestion ────────────────────────────
+  const [streetSuggestions, setStreetSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions]     = useState(false);
+  const sessionTokenRef  = useRef<any>(null);
+  const streetDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handleStreetInput(inputValue: string) {
+    onChange({ ...value, street: inputValue });
+    if (streetDebounceRef.current) clearTimeout(streetDebounceRef.current);
+
+    if (!inputValue || inputValue.length < 2) {
+      setStreetSuggestions([]); setShowSuggestions(false); return;
+    }
+
+    streetDebounceRef.current = setTimeout(async () => {
+      const Places = (window as any).google?.maps?.places;
+      if (!Places?.AutocompleteSuggestion) return;
+      try {
+        if (!sessionTokenRef.current)
+          sessionTokenRef.current = new Places.AutocompleteSessionToken();
+
+        const { suggestions } = await Places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+          input:               inputValue,
+          sessionToken:        sessionTokenRef.current,
+          includedRegionCodes: ["nl"],
+          // Biais géographique — bounding box Pays-Bas uniquement
+          locationBias: {
+            north: 53.6, south: 50.7,
+            east:   7.2, west:   3.3,
+          },
+        });
+        setStreetSuggestions(suggestions.map((s: any) => s.placePrediction));
+        setShowSuggestions(true);
+      } catch { setStreetSuggestions([]); }
+    }, 300);
+  }
+
+  async function handleStreetSelect(prediction: any) {
+    // Fallback immédiat sur le texte principal de la suggestion
+    const mainText      = prediction.mainText?.text      ?? "";
+    const secondaryText = prediction.secondaryText?.text ?? "";
+
+    // Pré-remplir avec les données de la prédiction (affichage instantané)
+    onChange({ ...value, street: mainText });
+
+    try {
+      const place = prediction.toPlace();
+      await place.fetchFields({ fields: ["addressComponents"] });
+
+      const components: any[] = place.addressComponents ?? [];
+      let street = "", number = "", city = value.city;
+
+      for (const c of components) {
+        const types: string[] = c.types ?? [];
+        if (types.includes("route"))         street = c.longText ?? "";
+        if (types.includes("street_number")) number = c.longText ?? "";
+        if (types.includes("locality"))      city   = c.longText ?? "";
+        if (!city && types.includes("postal_town")) city = c.longText ?? "";
+      }
+
+      // Si fetchFields ne retourne pas de rue, utiliser le mainText
+      if (!street) street = mainText;
+      // Si pas de ville depuis l'API, essayer le secondaryText (ex. "Amsterdam, Pays-Bas")
+      if (!city && secondaryText) city = secondaryText.split(",")[0].trim();
+
+      onChange({ ...value, street, number, city });
+    } catch {
+      // Le fallback sur mainText est déjà appliqué ci-dessus
+    }
+
+    setStreetSuggestions([]);
+    setShowSuggestions(false);
+    sessionTokenRef.current = null;
+  }
+  // ────────────────────────────────────────────────────────────────────────
 
   const ADDRESS_MODES = [
     { value: "adres" as AddressMode, label: t("addressModes.adres") },
-    { value: "postcode" as AddressMode, label: t("addressModes.postcode") },
-    { value: "internationaal" as AddressMode, label: t("addressModes.internationaal") },
     { value: "vliegveld" as AddressMode, label: t("addressModes.vliegveld") },
   ];
 
@@ -120,7 +197,7 @@ function AddressBlock({ type, value, onChange, zones }: {
           </div>
         </div>
 
-        {/* Mode Adres : dropdown ville searchable + saisie rue */}
+        {/* Mode Adres : dropdown ville + saisie rue avec Places Autocomplete */}
         {value.mode === "adres" && (
           <div className="grid grid-cols-3 gap-2">
             <div className="col-span-3">
@@ -157,12 +234,34 @@ function AddressBlock({ type, value, onChange, zones }: {
                 </div>
               )}
             </div>
-            <input
-              value={value.street}
-              onChange={(e) => onChange({ ...value, street: e.target.value })}
-              placeholder={t("placeholders.street")}
-              className={`col-span-2 ${inputCls}`}
-            />
+            {/* Champ rue — Places API (New) dropdown custom */}
+            <div className="relative col-span-2">
+              <input
+                value={value.street}
+                onChange={(e) => handleStreetInput(e.target.value)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                onFocus={() => streetSuggestions.length > 0 && setShowSuggestions(true)}
+                placeholder={t("placeholders.street")}
+                className={inputCls}
+                autoComplete="off"
+              />
+              {showSuggestions && streetSuggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-border bg-card shadow-lg">
+                  {streetSuggestions.map((pred: any, i: number) => (
+                    <button key={i} type="button"
+                      onMouseDown={() => handleStreetSelect(pred)}
+                      className="flex w-full flex-col px-3 py-2.5 text-left transition-colors hover:bg-muted">
+                      <span className="text-sm font-medium text-foreground">
+                        {pred.mainText?.text ?? ""}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {pred.secondaryText?.text ?? ""}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <input
               value={value.number}
               onChange={(e) => onChange({ ...value, number: e.target.value })}
@@ -170,17 +269,6 @@ function AddressBlock({ type, value, onChange, zones }: {
               className={inputCls}
             />
           </div>
-        )}
-
-        {value.mode === "postcode" && (
-          <div className="grid grid-cols-3 gap-2">
-            <input value={value.postcode} onChange={(e) => onChange({ ...value, postcode: e.target.value })} placeholder={t("addressModes.postcode")} className={`col-span-2 ${inputCls}`} />
-            <input value={value.postcodeNumber} onChange={(e) => onChange({ ...value, postcodeNumber: e.target.value })} placeholder="#" className={inputCls} />
-          </div>
-        )}
-
-        {value.mode === "internationaal" && (
-          <input value={value.international} onChange={(e) => onChange({ ...value, international: e.target.value })} placeholder={t("placeholders.international")} className={inputCls} />
         )}
 
         {value.mode === "vliegveld" && (
@@ -230,15 +318,13 @@ export default function BookingForm() {
   function swapAddresses() { setPickup(dropoff); setDropoff(pickup); }
 
   useEffect(() => {
-    const max = VEHICLE_MAX_PASSENGERS[vehicleType];
-    setPassengers((p) => Math.min(p, max));
-  }, [vehicleType]);
-
-  useEffect(() => {
-    if (pickupAddress.trim().length < 3 || dropoffAddress.trim().length < 3) { setPrice(null); return; }
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    setPriceLoading(true);
     debounceRef.current = setTimeout(async () => {
+      if (pickupAddress.trim().length < 3 || dropoffAddress.trim().length < 3) {
+        setPrice(null);
+        return;
+      }
+      setPriceLoading(true);
       try {
         const res = await fetch("/api/pricing", {
           method: "POST", headers: { "Content-Type": "application/json" },
@@ -273,7 +359,10 @@ export default function BookingForm() {
     } catch { setError(t("errors.networkError")); setSubmitting(false); }
   }
 
-  const minDateTime = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16);
+  // useState avec lazy initializer — la fonction ne s'exécute qu'au montage (pas au re-render)
+  const [minDateTime] = useState(
+    () => new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16)
+  );
 
   if (reference) {
     return (
@@ -308,7 +397,7 @@ export default function BookingForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
+    <form onSubmit={handleSubmit} className="w-full rounded-3xl border border-border bg-card shadow-lift" style={{ isolation: "isolate" }}>
       <div className="gradient-navy px-6 pt-5 pb-4">
         <div className="mb-1.5 flex items-center justify-between">
           <p className="text-eyebrow text-aqua">{t("badge")}</p>
@@ -342,10 +431,10 @@ export default function BookingForm() {
               <p className="mb-2 text-eyebrow text-muted-foreground">{t("chooseVehicle")}</p>
               <div className="grid grid-cols-3 gap-2">
                 {(Object.keys(VEHICLE_LABELS) as VehicleType[]).map((v) => (
-                  <button type="button" key={v} onClick={() => setVehicleType(v)} aria-pressed={vehicleType === v}
+                  <button type="button" key={v} onClick={() => { setVehicleType(v); setPassengers((p) => Math.min(p, VEHICLE_MAX_PASSENGERS[v])); }} aria-pressed={vehicleType === v}
                     className={`relative overflow-hidden rounded-2xl border-2 text-left transition-all ${vehicleType === v ? "border-primary ring-2 ring-ring/25" : "border-border hover:border-primary/40"}`}>
                     <div className="relative h-16 w-full bg-muted">
-                      <img src={VEHICLE_IMAGES[v]} alt={VEHICLE_LABELS[v]} loading="lazy" className="h-full w-full object-cover" />
+                      <Image src={VEHICLE_IMAGES[v]} alt={VEHICLE_LABELS[v]} fill sizes="(max-width: 640px) 33vw, 150px" className="object-cover" />
                       {vehicleType === v && (
                         <span className="absolute top-1.5 right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
                           <Check className="h-3 w-3" strokeWidth={3} />
@@ -372,7 +461,7 @@ export default function BookingForm() {
                   <div>
                     <p className="text-eyebrow text-aqua">{t("estimatedPrice")}</p>
                     <p className="mt-0.5 font-display text-3xl font-extrabold text-navy-foreground">
-                      {price.price.toFixed(2)}<span className="text-xl text-aqua">€</span>
+                      {price?.price?.toFixed(2) ?? "—"}<span className="text-xl text-aqua">€</span>
                     </p>
                   </div>
                   <div className="text-right">
@@ -396,7 +485,7 @@ export default function BookingForm() {
           <>
             <div className="overflow-hidden rounded-2xl border border-border bg-muted/50">
               <div className="flex gap-3 p-3">
-                <img src={VEHICLE_IMAGES[vehicleType]} alt={VEHICLE_LABELS[vehicleType]} loading="lazy" className="h-16 w-24 shrink-0 rounded-xl object-cover" />
+                <Image src={VEHICLE_IMAGES[vehicleType]} alt={VEHICLE_LABELS[vehicleType]} width={96} height={64} className="shrink-0 rounded-xl object-cover" />
                 <div className="min-w-0 flex-1 space-y-1 text-xs text-muted-foreground">
                   <div className="flex items-start gap-1.5"><span className="mt-0.5 font-bold text-primary">↑</span><span className="truncate">{pickupAddress}</span></div>
                   <div className="flex items-start gap-1.5"><span className="mt-0.5 font-bold text-accent">↓</span><span className="truncate">{dropoffAddress}</span></div>

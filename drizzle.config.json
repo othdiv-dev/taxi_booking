@@ -1,7 +1,0 @@
-{
-  "dialect": "mysql",
-  "schema": "./src/db/schema.ts",
-  "dbCredentials": {
-    "url": "${DATABASE_URL}"
-  }
-}
